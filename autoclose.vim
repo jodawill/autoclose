@@ -1,6 +1,6 @@
 " Vim plugin to automatically close braces, brackets, etc.
 " Name:       AutoClose
-" Version:    1.0
+" Version:    1.1
 " Maintainer: Josh Williams
 " License:    GPLv2
 
