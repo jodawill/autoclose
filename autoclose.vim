@@ -1,27 +1,66 @@
 " Vim plugin to automatically close braces, brackets, etc.
 " Name:       AutoClose
-" Version:    1.0
+" Version:    1.1
 " Maintainer: Josh Williams
 " License:    GPLv2
 
-inoremap { {}<Esc>i
-inoremap <expr> } AutoClose('}')
+function SetAutoClose()
+ inoremap <expr> <BS> BackSpace()
 
-inoremap {<CR> {<CR>}<Esc>O
-inoremap <expr> } AutoClose('}')
+ inoremap <expr> " AutoQuote('"')
+ 
+ inoremap { {}<Esc>i
+ inoremap <expr> } AutoClose('}')
+ 
+ inoremap {<CR> {<CR>}<Esc>O
+ inoremap <expr> } AutoClose('}')
+ 
+ inoremap ( ()<Esc>i
+ inoremap <expr> ) AutoClose(')')
+ 
+ inoremap [ []<Esc>i
+ inoremap <expr> ] AutoClose(']')
+ 
+ inoremap < <><Esc>i
+ inoremap <expr> > AutoClose('>')
+endfunction
 
-inoremap ( ()<Esc>i
-inoremap <expr> ) AutoClose(')')
+function NextChar()
+ return getline('.')[col('.') - 1]
+endfunction
+ 
+function CurChar()
+ return getline('.')[col('.') - 2]
+endfunction
 
-inoremap [ []<Esc>i
-inoremap <expr> ] AutoClose(']')
+function GetMatch(char)
+ if a:char == '('
+  return ')'
+ endif
+ if a:char == '['
+  return ']'
+ endif
+ if a:char == '{'
+  return '}'
+ endif
+ if a:char == '<'
+  return '>'
+ endif
+ return 'nomatch'
+endfunction
 
-inoremap < <><Esc>i
-inoremap <expr> > AutoClose('>')
+function BackSpace()
+ if NextChar() != GetMatch(CurChar())
+  call feedkeys('OD[3~')
+ else
+  call feedkeys('xxa')
+ endif
+ return ''
+endfunction
 
 function AutoClose(char)
- let cchar = getline('.')[col('.')-1]
- if cchar == a:char
+ let nchar = NextChar()
+ if nchar == a:char
   call feedkeys('OC')
   return ''
  endif
