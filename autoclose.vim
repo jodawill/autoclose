@@ -7,8 +7,6 @@
 function SetAutoClose()
  inoremap <expr> <BS> BackSpace()
 
- inoremap <expr> " AutoQuote('"')
- 
  inoremap { {}<Esc>i
  inoremap <expr> } AutoClose('}')
  
